@@ -8,6 +8,9 @@
 
 from django.contrib.auth.models import Group, User
 from rest_framework.serializers import ModelSerializer, ValidationError
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class UserSerializer(ModelSerializer):
@@ -26,7 +29,11 @@ class UserSerializer(ModelSerializer):
             'email', 
             'password', 
             'first_name', 
-            'last_name'
+            'last_name',
+            'birth_date',
+            'height',
+            'weight',
+            'goal'
         ]
 
         # @brief Additional keyword arguments for serializer fields.
@@ -52,7 +59,11 @@ class UserSerializer(ModelSerializer):
             'username',
             'password',
             'first_name',
-            'last_name'
+            'last_name',
+            'birth_date',
+            'height',
+            'weight',
+            'goal'
         ]
         
         # If this is a partial update, skip validation for missing required fields.
@@ -85,5 +96,9 @@ class UserSerializer(ModelSerializer):
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
             password=validated_data["password"],
+            birth_date=validated_data["birth_date"],
+            height=validated_data["height"],
+            weight=validated_data["weight"],
+            goal=validated_data["goal"]
         )
         return user
