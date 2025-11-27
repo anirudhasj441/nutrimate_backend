@@ -50,7 +50,7 @@ services:
       bash -c "
         python manage.py makemigrations && \
         python manage.py migrate && \
-        gunicorn dc_simulate_server.wsgi:application --bind 0.0.0.0:8000
+        gunicorn nutrimate_backend.wsgi:application --bind 0.0.0.0:8000
       "
     
     ports:
