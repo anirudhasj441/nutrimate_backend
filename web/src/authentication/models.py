@@ -8,7 +8,8 @@ class GoalChoices( models.TextChoices ):
     GAIN_MUSCLE = "GM", "Gain Muscle"
     MAINTAIN_WEIGHT = "MW", "Maintain Weight"
     IMPROVE_ENDURANCE = "IE", "Improve Endurance"
-    FLEXIBILITY = "FL", "Increase Flexibility"
+    FLEXIBILITY = "IF", "Increase Flexibility"
+    FAT_LOSS = "FL", "Fat Loss"
 
 class CustomUser( AbstractUser ):
     birth_date= models.DateField( null=True, blank=True )
