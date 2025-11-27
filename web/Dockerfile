@@ -12,6 +12,6 @@ RUN python manage.py collectstatic --noinput
 
 # ENTRYPOINT [\ 
 #     "gunicorn", \
-#     "dc_simulate_server.wsgi:application", \
+#     nutrimate_backend.wsgi:application", \
 #     "-b", "0.0.0.0:8000"\
 # ]
