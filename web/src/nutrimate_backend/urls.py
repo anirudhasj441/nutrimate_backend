@@ -22,5 +22,6 @@ from django.http import HttpResponse
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls')),
+    path('recipes/', include('recipes.urls')),
     path('healt_check', lambda request: HttpResponse( "OK" ))
 ]
