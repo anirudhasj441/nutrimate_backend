@@ -14,10 +14,20 @@ User = get_user_model()
 class RecipeListView( APIView ):
     permission_classes = [ IsAuthenticated ]
 
-    def get( self, request ):
+    def get( self, request, recipe_id=None ):
+        if recipe_id:
+            try:
+                recipe = Recipe.objects.get( id=recipe_id )
+                serializer = RecipeSerializer( recipe )
+                return Response( { "recipe": serializer.data } )
+            except Recipe.DoesNotExist:
+                return Response( { "error": "Recipe not found." }, status=404 )
+
         recipes = Recipe.objects.all()
         if recipes.exists():
             serializer = RecipeSerializer( recipes, many=True )
             return Response( { "recipes": serializer.data } )
 
         return Response( { "recipes": [] } )
+    
+
