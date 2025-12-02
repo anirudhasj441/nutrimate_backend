@@ -78,6 +78,7 @@ class RecipeSerializer(ModelSerializer):
 
         # @brief The fields to include in the serialized output.
         fields = [
+            'id',
             'title',
             'description',
             'instructions',
