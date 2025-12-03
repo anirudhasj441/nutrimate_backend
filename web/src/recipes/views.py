@@ -60,14 +60,17 @@ class RecipeListView( APIView ):
         ingredients = data.get( "recipe_ingredients", [] )
 
         for ingredient in ingredients:
-            ingredientSerializer = IngredientSerializer( data=ingredient.get( "ingredient", {} ))
-            if not ingredientSerializer.is_valid():
-                return Response({
-                    "error": "Invalid ingredient data.", 
-                    "details": ingredientSerializer.errors 
-                }, status=400 )
-            
-            ingredient_obj = ingredientSerializer.save()
+            ingredient_obj = Ingredient.objects.filter( name=ingredient.get( "ingredient", {} ).get( "name" ) ).first()
+
+            if not ingredient_obj:
+                ingredientSerializer = IngredientSerializer( data=ingredient.get( "ingredient", {} ))
+                if not ingredientSerializer.is_valid():
+                    return Response({
+                        "error": "Invalid ingredient data.", 
+                        "details": ingredientSerializer.errors 
+                    }, status=400 )
+                
+                ingredient_obj = ingredientSerializer.save()
             
             recipeInerdientSerializer = RecipeIngredientSerializer( data = {
                 "recipe": recipe.pk,
