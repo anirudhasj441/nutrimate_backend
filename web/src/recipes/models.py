@@ -24,7 +24,7 @@ class Recipe( models.Model ):
     description = models.TextField()
     instructions = models.TextField()
     category = models.CharField( max_length=100, choices=CategoryChoices.choices, null=True, blank=True )    
-    Ingredient = models.ManyToManyField( 'Ingredient', related_name='recipes', through='RecipeIngredient', blank=True )
+    ingredient = models.ManyToManyField( 'Ingredient', related_name='recipes', through='RecipeIngredient', blank=True )
     prep_time = models.IntegerField( null=True, blank=True )  # in minutes
     cook_time = models.IntegerField( null=True, blank=True )  # in minutes
     servings = models.IntegerField( null=True, blank=True )
