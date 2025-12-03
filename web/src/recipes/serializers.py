@@ -49,23 +49,25 @@ class IngredientSerializer(ModelSerializer):
     
 # ---------------- RecipeIngredient Serializer ----------------
 class RecipeIngredientSerializer(ModelSerializer):
-    ingredient = IngredientSerializer(read_only=True)
-    ingredient_id = PrimaryKeyRelatedField(
-        queryset=Ingredient.objects.all(),
-        source='ingredient',  # map ingredient_id to ingredient
-        write_only=True
-    )
-
     class Meta:
         model = RecipeIngredient
-        fields = ['ingredient', 'ingredient_id', 'quantity', 'unit']
+        fields = ['recipe', 'ingredient', 'quantity', 'unit']
 
+        extra_kwargs = { 'recipe': { 'write_only': True }, 'ingredient': { 'write_only': True } }
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+
+        # Replace ingredient ID with full ingredient object
+        data['ingredient'] = IngredientSerializer(instance.ingredient).data
+
+        return data
 class RecipeSerializer(ModelSerializer):
     recipe_ingredients = RecipeIngredientSerializer(
         many=True,
         source='recipeingredient_set',
         # write_only=True,
-        required=False
+        read_only=True
     )
 
     class Meta:
