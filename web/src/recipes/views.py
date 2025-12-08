@@ -24,7 +24,13 @@ class RecipeListView( APIView ):
             except Recipe.DoesNotExist:
                 return Response( { "error": "Recipe not found." }, status=404 )
 
-        recipes = Recipe.objects.all()
+
+        category = request.query_params.get('category')
+        if category:
+            recipes = Recipe.objects.filter(category=category)
+        else:
+            recipes = Recipe.objects.all()
+            
         if recipes.exists():
             serializer = RecipeSerializer( recipes, many=True )
             return Response( { "recipes": serializer.data } )
