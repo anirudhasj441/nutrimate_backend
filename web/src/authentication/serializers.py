@@ -9,6 +9,8 @@
 from django.contrib.auth.models import Group, User
 from rest_framework.serializers import ModelSerializer, ValidationError
 from django.contrib.auth import get_user_model
+from .models import FitnessTracker
+
 
 User = get_user_model()
 
@@ -102,3 +104,52 @@ class UserSerializer(ModelSerializer):
             goal=validated_data["goal"]
         )
         return user
+    
+class FitnessTrackerSerializer(ModelSerializer):
+    class Meta:
+        model = FitnessTracker
+        fields = [
+            'user',
+            'date',
+            'calories_consumed',
+            'steps',
+            'water_intake'
+        ]
+
+    def create(self, validated_data):
+        fitness_tracker = FitnessTracker.objects.create(
+            user=validated_data["user"],
+            date=validated_data["date"],
+            calories_consumed=validated_data["calories_consumed"],
+            steps=validated_data["steps"],
+            water_intake=validated_data["water_intake"]
+        )
+        return fitness_tracker
+    
+    def update(self, instance, validated_data):
+        instance.calories_consumed = validated_data.get("calories_consumed", instance.calories_consumed)
+        instance.steps = validated_data.get("steps", instance.steps)
+        instance.water_intake = validated_data.get("water_intake", instance.water_intake)
+        instance.save()
+        return instance
+    
+    def delete(self, instance):
+        instance.delete()
+    
+    def validate(self, data):
+        required_fields = [
+            'user',
+            'date',
+            'calories_consumed',
+            'steps',
+            'water_intake'
+        ]
+
+        if self.partial:
+            return data
+
+        for field in required_fields:
+            if field not in data.keys():
+                raise ValidationError({field: f"{field} is required"})
+
+        return data

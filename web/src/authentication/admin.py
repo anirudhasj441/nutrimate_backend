@@ -1,4 +1,4 @@
-from authentication.models import CustomUser
+from authentication.models import CustomUser, FitnessTracker
 from django.contrib import admin
 from django.db import models
 from django.forms import NumberInput
@@ -31,3 +31,16 @@ class CustomUserAdmin( UserAdmin ):
     }
 
 
+@admin.register( FitnessTracker )
+class FitnessTrackerAdmin( admin.ModelAdmin ):
+    fields = (
+        "user",
+        "date",
+        "steps",
+        "calories_consumed",
+        "water_intake"
+    )
+
+    formfield_overrides = {
+        models.FloatField: {'widget': NumberInput(attrs={'step': '0.01'})},
+    }
